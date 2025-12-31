@@ -1,5 +1,5 @@
 # Engineering-Workplace-Optimizer
-An Arduino based IoT system which was created to optimize cognitive skills by monitoring environmental health (Through the DHT11) and managing workflow using the Pomodoro Method.
+An Arduino based IoT system which was created to boost focus and optimize cognitive skills by monitoring environmental conditions (Through the DHT11) and managing workflow using the Pomodoro Method.
 
 System Hardware: MicroController: Arduino Uno 
 Display: 16 x 2 LCD 
