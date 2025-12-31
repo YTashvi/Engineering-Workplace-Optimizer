@@ -1,0 +1,89 @@
+1. Setting up Data connection using LCD display. 
+
+  #include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+void setup() { 
+  lcd.begin(16, 2); 
+  lcd.setCursor(0, 0); 
+  lcd.print("MONITOR V1.0"); 
+  lcd.setCursor(0, 1); 
+  lcd.print("RDY"); 
+}
+
+void loop() { } 
+
+2. Environmental Monitroing System  
+
+#include <LiquidCrystal.h>
+#include <DHT.h>
+
+#define DHTPIN 6
+#define DHTTYPE DHT11
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+  lcd.begin(16, 2);
+  dht.begin();
+  lcd.print("MONITOR V2.0");
+}
+
+void loop() {
+  float t = dht.readTemperature();
+  lcd.setCursor(0, 1);
+  if (isnan(t)) {
+    lcd.print("SENSOR ERR");
+  } else {
+    lcd.print("TEMP: ");
+    lcd.print(t);
+    lcd.print(" C");
+  }
+  delay(2000); 
+} 
+
+3. Added a Pomodoro focus-timer to mitigate cognitive fatigue  
+#include <LiquidCrystal.h>
+#include <DHT.h>
+
+#define BTN 7
+#define RED 8
+#define GREEN 9
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+DHT dht(6, DHT11);
+
+int timeLeft = 1500; 
+bool running = false;
+
+void setup() {
+  lcd.begin(16, 2);
+  dht.begin();
+  pinMode(BTN, INPUT_PULLUP);
+  pinMode(RED, OUTPUT);
+  pinMode(GREEN, OUTPUT);
+}
+
+void loop() {
+  float t = dht.readTemperature();
+  if (digitalRead(BTN) == LOW) { running = !running; delay(300); }
+
+  lcd.setCursor(0, 0);
+  lcd.print("TEMP: ");
+  lcd.print(t);
+  lcd.print("C");
+
+  lcd.setCursor(0, 1);
+  if (running) {
+    digitalWrite(RED, HIGH); digitalWrite(GREEN, LOW);
+    lcd.print("FOCUS: ");
+    lcd.print(timeLeft / 60); lcd.print(":"); lcd.print(timeLeft % 60);
+    delay(1000); timeLeft--;
+  } else {
+    digitalWrite(RED, LOW); digitalWrite(GREEN, HIGH);
+    lcd.print("STATUS: READY  ");
+  }
+}
+
